@@ -1,643 +1,1623 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Cozm | Pricing</title>
-  <link rel="icon" type="image/png" href="assets/logo-teal-bg.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <style>
-    /* ── Reset & Base ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      color: #181C31;
-      background: #fff;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Cozm - Global Workforce Solutions</title>
+    <link rel="icon" type="image/png" href="assets/images/logo-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-deep: #0A1628;
+            --navy-medium: #152238;
+            --navy-light: #1E2F47;
+            --gold: #D4AF37;
+            --gold-light: #E8C96F;
+            --amber: #FFA500;
+            --white: #FFFFFF;
+            --cream: #F8F6F0;
+            --gray: #8B9099;
+            --gray-light: #C4C9D0;
+        }
 
-    /* ── Brand Tokens ── */
-    :root {
-      --teal: #40AEBC;
-      --teal-dark: #2E8A96;
-      --indigo: #181C31;
-      --sky: #83849E;
-      --gray: #EEEEEE;
-      --pastel: #EDF5FF;
-      --red: #BD4040;
-      --white: #ffffff;
-      --gradient: linear-gradient(135deg, #181C31 0%, #1D2E42 100%);
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    /* ── Password Gate ── */
-    #password-gate {
-      position: fixed; inset: 0; z-index: 9999;
-      background: var(--gradient);
-      display: flex; align-items: center; justify-content: center;
-      flex-direction: column; gap: 28px;
-    }
-    #password-gate img { width: 140px; }
-    #password-gate .gate-box {
-      background: rgba(255,255,255,0.06);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 16px; padding: 40px; text-align: center;
-      max-width: 400px; width: 90%;
-    }
-    #password-gate h2 { color: var(--white); font-size: 1.25rem; margin-bottom: 8px; }
-    #password-gate p { color: var(--sky); font-size: 0.875rem; margin-bottom: 24px; }
-    #password-gate input {
-      width: 100%; padding: 14px 18px; border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.08);
-      color: var(--white); font-size: 1rem; outline: none;
-      transition: border-color 0.2s;
-    }
-    #password-gate input::placeholder { color: rgba(255,255,255,0.4); }
-    #password-gate input:focus { border-color: var(--teal); }
-    #password-gate button {
-      margin-top: 16px; width: 100%; padding: 14px;
-      background: var(--teal); color: var(--white); border: none;
-      border-radius: 10px; font-size: 1rem; font-weight: 600;
-      cursor: pointer; transition: background 0.2s;
-    }
-    #password-gate button:hover { background: var(--teal-dark); }
-    #password-gate .error { color: var(--red); font-size: 0.85rem; margin-top: 10px; display: none; }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: var(--navy-deep);
+            color: var(--white);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
 
-    /* ── Main Content (hidden until auth) ── */
-    #main-content { display: none; }
+        /* Password Modal */
+        .password-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
 
-    /* ── Navigation ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(24, 28, 49, 0.95); backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      padding: 0 40px; height: 64px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    nav img { height: 36px; }
-    nav ul { list-style: none; display: flex; gap: 32px; }
-    nav a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
-    nav a:hover { color: var(--teal); }
+        .password-modal.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
 
-    /* ── Hero ── */
-    .hero {
-      background: var(--gradient);
-      padding: 160px 40px 100px;
-      text-align: center; color: var(--white);
-    }
-    .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; margin-bottom: 20px; line-height: 1.2; }
-    .hero h1 span { color: var(--teal); }
-    .hero p { max-width: 640px; margin: 0 auto; color: rgba(255,255,255,0.7); font-size: 1.125rem; }
-    .hero .badge {
-      display: inline-block; margin-top: 32px;
-      background: rgba(64,174,188,0.15); border: 1px solid rgba(64,174,188,0.3);
-      padding: 10px 24px; border-radius: 50px;
-      color: var(--teal); font-weight: 600; font-size: 0.9rem;
-    }
+        .password-content {
+            background: linear-gradient(135deg, var(--navy-medium) 0%, var(--navy-light) 100%);
+            padding: 60px 50px;
+            border-radius: 16px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+            max-width: 480px;
+            width: 90%;
+            text-align: center;
+            animation: modalSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
 
-    /* ── Section Utilities ── */
-    .section { padding: 100px 40px; max-width: 1100px; margin: 0 auto; }
-    .section-label {
-      text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem;
-      font-weight: 700; color: var(--teal); margin-bottom: 12px;
-    }
-    .section-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; margin-bottom: 16px; }
-    .section-subtitle { color: var(--sky); font-size: 1.05rem; max-width: 600px; margin-bottom: 48px; }
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
 
-    /* ── Price Comparison ── */
-    .comparison-bg { background: var(--pastel); }
-    .comparison-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
-    }
-    .price-card {
-      background: var(--white); border-radius: 16px;
-      padding: 40px; text-align: center;
-      border: 2px solid transparent; transition: all 0.3s;
-      position: relative; overflow: hidden;
-    }
-    .price-card.cozm { border-color: var(--teal); }
-    .price-card.cozm::before {
-      content: 'RECOMMENDED'; position: absolute; top: 20px; right: -30px;
-      background: var(--teal); color: var(--white); padding: 4px 40px;
-      font-size: 0.65rem; font-weight: 700; letter-spacing: 1px;
-      transform: rotate(45deg);
-    }
-    .price-card .provider { font-size: 0.85rem; font-weight: 600; color: var(--sky); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-    .price-card .price { font-size: 3rem; font-weight: 800; margin-bottom: 4px; }
-    .price-card .price-unit { font-size: 0.9rem; color: var(--sky); margin-bottom: 24px; }
-    .price-card.cozm .price { color: var(--teal); }
-    .price-card.big4 .price { color: var(--red); }
-    .price-card ul { list-style: none; text-align: left; }
-    .price-card li { padding: 10px 0; border-bottom: 1px solid var(--gray); font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
-    .price-card li:last-child { border: none; }
-    .check { color: var(--teal); font-weight: 700; }
-    .cross { color: var(--red); font-weight: 700; }
+        .password-logo {
+            margin-bottom: 30px;
+        }
 
-    /* ── Bar Chart ── */
-    .bar-chart-section { margin-top: 60px; }
-    .bar-row {
-      display: flex; align-items: center; gap: 16px; margin-bottom: 20px;
-    }
-    .bar-label { min-width: 140px; font-size: 0.85rem; font-weight: 600; text-align: right; }
-    .bar-track { flex: 1; height: 44px; background: var(--gray); border-radius: 8px; overflow: hidden; position: relative; }
-    .bar-fill {
-      height: 100%; border-radius: 8px; display: flex; align-items: center;
-      padding-left: 16px; color: var(--white); font-weight: 700; font-size: 0.9rem;
-      transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1);
-      width: 0;
-    }
-    .bar-fill.cozm-bar { background: linear-gradient(90deg, var(--teal), #5CC8D4); }
-    .bar-fill.big4-bar { background: linear-gradient(90deg, var(--red), #D96060); }
-    .bar-value { min-width: 80px; font-weight: 700; font-size: 0.95rem; }
-    .savings-callout {
-      margin-top: 32px; padding: 24px 32px;
-      background: linear-gradient(135deg, rgba(64,174,188,0.08), rgba(64,174,188,0.02));
-      border: 1px solid rgba(64,174,188,0.2);
-      border-radius: 12px; text-align: center;
-    }
-    .savings-callout .big { font-size: 2.5rem; font-weight: 800; color: var(--teal); }
-    .savings-callout p { color: var(--sky); margin-top: 4px; }
+        .password-logo img {
+            max-width: 200px;
+            height: auto;
+        }
 
-    /* ── Estimators ── */
-    .estimator-bg { background: var(--gradient); color: var(--white); }
-    .estimator-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-    .estimator-card {
-      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 16px; padding: 40px;
-    }
-    .estimator-card h3 { font-size: 1.3rem; margin-bottom: 8px; }
-    .estimator-card .tag {
-      display: inline-block; padding: 4px 12px; border-radius: 50px;
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 1px;
-      margin-bottom: 20px;
-    }
-    .tag-travel { background: rgba(64,174,188,0.2); color: var(--teal); }
-    .tag-unity { background: rgba(189,64,64,0.2); color: #F08080; }
-    .estimator-card label { display: block; font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
-    .estimator-card input[type="range"] {
-      width: 100%; -webkit-appearance: none; appearance: none;
-      height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px;
-      outline: none;
-    }
-    .estimator-card input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none; width: 22px; height: 22px;
-      background: var(--teal); border-radius: 50%; cursor: pointer;
-      border: 3px solid var(--white);
-    }
-    .estimator-card input[type="range"]::-moz-range-thumb {
-      width: 22px; height: 22px;
-      background: var(--teal); border-radius: 50%; cursor: pointer;
-      border: 3px solid var(--white);
-    }
-    .slider-values { display: flex; justify-content: space-between; font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 4px; margin-bottom: 24px; }
-    .estimate-result {
-      background: rgba(255,255,255,0.08); border-radius: 12px;
-      padding: 24px; text-align: center;
-    }
-    .estimate-result .label { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
-    .estimate-result .amount { font-size: 2.2rem; font-weight: 800; color: var(--teal); }
-    .estimate-result .compare { font-size: 0.85rem; color: var(--red); margin-top: 8px; text-decoration: line-through; opacity: 0.7; }
-    .estimate-result .save-badge {
-      display: inline-block; margin-top: 12px;
-      background: rgba(64,174,188,0.15); border: 1px solid rgba(64,174,188,0.3);
-      padding: 6px 16px; border-radius: 50px;
-      color: var(--teal); font-weight: 700; font-size: 0.85rem;
-    }
-    .volume-display { font-size: 1.6rem; font-weight: 700; color: var(--white); text-align: center; margin: 12px 0; }
+        .password-subtitle {
+            color: var(--gray-light);
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
 
-    /* ── Features Row ── */
-    .features-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px;
-    }
-    .feature-item {
-      background: var(--pastel); border-radius: 12px; padding: 32px;
-      text-align: center;
-    }
-    .feature-icon { font-size: 2rem; margin-bottom: 12px; }
-    .feature-item h4 { font-size: 1rem; margin-bottom: 8px; }
-    .feature-item p { font-size: 0.85rem; color: var(--sky); }
+        .password-input {
+            width: 100%;
+            padding: 18px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            color: var(--white);
+            font-size: 16px;
+            font-family: 'Manrope', sans-serif;
+            transition: all 0.3s ease;
+            outline: none;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 4px;
+        }
 
-    /* ── FAQ ── */
-    .faq-item {
-      border: 1px solid var(--gray); border-radius: 12px;
-      margin-bottom: 12px; overflow: hidden; transition: all 0.3s;
-    }
-    .faq-item:hover { border-color: rgba(64,174,188,0.3); }
-    .faq-question {
-      padding: 20px 24px; cursor: pointer; display: flex;
-      justify-content: space-between; align-items: center;
-      font-weight: 600; font-size: 0.95rem;
-      user-select: none;
-    }
-    .faq-question .arrow { color: var(--teal); transition: transform 0.3s; font-size: 1.2rem; }
-    .faq-item.open .arrow { transform: rotate(180deg); }
-    .faq-answer {
-      max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s;
-      padding: 0 24px;
-    }
-    .faq-item.open .faq-answer { max-height: 300px; padding: 0 24px 20px; }
-    .faq-answer p { color: var(--sky); font-size: 0.9rem; line-height: 1.7; }
+        .password-input:focus {
+            border-color: var(--gold);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+        }
 
-    /* ── CTA ── */
-    .cta-section {
-      background: var(--gradient); padding: 80px 40px;
-      text-align: center; color: var(--white);
-    }
-    .cta-section h2 { font-size: 2rem; font-weight: 700; margin-bottom: 16px; }
-    .cta-section p { color: rgba(255,255,255,0.6); margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto; }
-    .btn-cta {
-      display: inline-block; padding: 16px 40px;
-      background: var(--teal); color: var(--white);
-      border: none; border-radius: 10px;
-      font-size: 1rem; font-weight: 700; text-decoration: none;
-      transition: background 0.2s; cursor: pointer;
-    }
-    .btn-cta:hover { background: var(--teal-dark); }
+        .password-input::placeholder {
+            color: var(--gray);
+            letter-spacing: 1px;
+        }
 
-    /* ── Footer ── */
-    footer {
-      background: var(--indigo); padding: 32px 40px;
-      text-align: center; color: rgba(255,255,255,0.4);
-      font-size: 0.8rem;
-    }
+        .password-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--amber) 100%);
+            border: none;
+            border-radius: 8px;
+            color: var(--navy-deep);
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Manrope', sans-serif;
+        }
 
-    /* ── Responsive ── */
-    @media (max-width: 768px) {
-      .comparison-grid, .estimator-grid, .features-grid { grid-template-columns: 1fr; }
-      .bar-label { min-width: 80px; font-size: 0.75rem; }
-      nav ul { display: none; }
-      .section { padding: 60px 20px; }
-      .hero { padding: 120px 20px 60px; }
-    }
+        .password-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(212, 175, 55, 0.4);
+        }
 
-    /* ── Animations ── */
-    .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
-  </style>
+        .password-error {
+            color: #FF6B6B;
+            font-size: 14px;
+            margin-top: 16px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .password-error.show {
+            opacity: 1;
+        }
+
+        /* Main Content */
+        .main-content {
+            opacity: 0;
+            transition: opacity 0.8s ease 0.3s;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 22, 40, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled .logo img {
+            height: 40px;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Crimson Pro', serif;
+            font-size: 36px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--amber) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--gray-light);
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            font-weight: 500;
+            text-transform: uppercase;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--white);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .contact-btn {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--amber) 100%);
+            color: var(--navy-deep);
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 13px;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 120px 60px 80px;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.08;
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 165, 0, 0.15) 0%, transparent 50%);
+        }
+
+        .hero-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4AF37' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.4;
+            animation: patternMove 60s linear infinite;
+        }
+
+        @keyframes patternMove {
+            from { transform: translate(0, 0); }
+            to { transform: translate(60px, 60px); }
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-label {
+            display: inline-block;
+            padding: 10px 24px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50px;
+            color: var(--gold);
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease 0.2s both;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 72px;
+            line-height: 1.2;
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, var(--white) 0%, var(--gray-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--gray-light);
+            max-width: 700px;
+            margin: 0 auto 50px;
+            line-height: 1.8;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            animation: fadeInUp 0.8s ease 0.8s both;
+        }
+
+        .btn-primary {
+            padding: 18px 40px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--amber) 100%);
+            color: var(--navy-deep);
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-secondary {
+            padding: 18px 40px;
+            background: transparent;
+            color: var(--white);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        /* Services Section */
+        .services-section {
+            padding: 100px 60px;
+            background: linear-gradient(180deg, var(--navy-deep) 0%, var(--navy-medium) 100%);
+            position: relative;
+        }
+
+        .services-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-label {
+            color: var(--gold);
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .section-description {
+            font-size: 18px;
+            color: var(--gray-light);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Service Tabs */
+        .service-tabs {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+
+        .service-tab {
+            padding: 16px 36px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            color: var(--gray-light);
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--amber) 100%);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .service-tab:hover {
+            color: var(--white);
+            border-color: var(--gold);
+        }
+
+        .service-tab.active {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--amber) 100%);
+            color: var(--navy-deep);
+            border-color: var(--gold);
+        }
+
+        .service-tab.active::before {
+            left: 0;
+        }
+
+        /* Service Content */
+        .service-content {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .service-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .service-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .service-info h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            line-height: 1.3;
+        }
+
+        .service-info p {
+            font-size: 17px;
+            color: var(--gray-light);
+            line-height: 1.9;
+            margin-bottom: 40px;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 40px;
+        }
+
+        .service-features li {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .service-features li:hover {
+            padding-left: 10px;
+            border-color: var(--gold);
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--amber) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .feature-icon::after {
+            content: '✓';
+            color: var(--navy-deep);
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .feature-text h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--white);
+        }
+
+        .feature-text p {
+            font-size: 15px;
+            color: var(--gray);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .service-visual {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 16px;
+            padding: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .visual-decoration {
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .service-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-family: 'Crimson Pro', serif;
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--amber) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 15px;
+            color: var(--gray-light);
+            font-weight: 500;
+        }
+
+        /* Metrics Section */
+        .metrics-section {
+            padding: 100px 60px;
+            background: var(--navy-light);
+        }
+
+        .metrics-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+
+        .metric-item {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .metric-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--gold);
+            transform: translateY(-10px);
+        }
+
+        .metric-value {
+            font-family: 'Crimson Pro', serif;
+            font-size: 56px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--amber) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .metric-label {
+            font-size: 16px;
+            color: var(--gray-light);
+            font-weight: 500;
+        }
+
+        /* Testimonials */
+        .testimonials-section {
+            padding: 100px 60px;
+            background: linear-gradient(180deg, var(--navy-medium) 0%, var(--navy-deep) 100%);
+        }
+
+        .testimonials-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial-carousel {
+            position: relative;
+            margin-top: 60px;
+        }
+
+        .testimonial-slide {
+            display: none;
+            text-align: center;
+            padding: 60px 80px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 16px;
+            animation: slideIn 0.6s ease;
+        }
+
+        .testimonial-slide.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .testimonial-text {
+            font-family: 'Crimson Pro', serif;
+            font-size: 28px;
+            line-height: 1.6;
+            color: var(--white);
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--amber) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy-deep);
+        }
+
+        .author-info h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .author-info p {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .carousel-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background: var(--gold);
+            width: 40px;
+            border-radius: 6px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 120px 60px;
+            background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy-light) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+        }
+
+        .cta-container {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-container h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        .cta-container p {
+            font-size: 20px;
+            color: var(--gray-light);
+            margin-bottom: 50px;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 60px 40px;
+            background: var(--navy-deep);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand .logo {
+            margin-bottom: 20px;
+        }
+
+        .footer-brand .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .footer-brand p {
+            color: var(--gray);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .footer-column h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column ul li a {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--gold);
+        }
+
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .service-layout {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 30px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero {
+                padding: 100px 30px 60px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .section-title {
+                font-size: 36px;
+            }
+
+            .service-tabs {
+                gap: 15px;
+            }
+
+            .service-tab {
+                padding: 12px 24px;
+                font-size: 13px;
+            }
+
+            .service-info h3 {
+                font-size: 32px;
+            }
+
+            .service-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .testimonial-slide {
+                padding: 40px 30px;
+            }
+
+            .testimonial-text {
+                font-size: 20px;
+            }
+
+            .cta-container h2 {
+                font-size: 36px;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .services-section,
+            .metrics-section,
+            .testimonials-section,
+            .cta-section {
+                padding: 60px 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .password-content {
+                padding: 40px 30px;
+            }
+
+            .password-logo {
+                font-size: 36px;
+            }
+
+            .logo {
+                font-size: 28px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                padding: 14px 28px;
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<!-- ═══════════════ PASSWORD GATE ═══════════════ -->
-<div id="password-gate">
-  <img src="assets/logo-dark-bg.png" alt="The Cozm" />
-  <div class="gate-box">
-    <h2>Welcome</h2>
-    <p>This page is confidential. Please enter the access code to continue.</p>
-    <input type="password" id="gate-password" placeholder="Enter access code" autofocus />
-    <button onclick="checkPassword()">Unlock</button>
-    <div class="error" id="gate-error">Incorrect code. Please try again.</div>
-  </div>
-</div>
-
-<!-- ═══════════════ MAIN CONTENT ═══════════════ -->
-<div id="main-content">
-
-  <!-- Nav -->
-  <nav>
-    <img src="assets/logo-dark-bg.png" alt="The Cozm" />
-    <ul>
-      <li><a href="#pricing">Pricing</a></li>
-      <li><a href="#estimator">Estimator</a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-
-  <!-- Hero -->
-  <section class="hero">
-    <div class="fade-in">
-      <h1>Enterprise compliance.<br/><span>40% of the cost.</span></h1>
-      <p>The Cozm automates cross-border tax, social security, and immigration filings &mdash; replacing manual Big&nbsp;4 processes with intelligent automation.</p>
-      <div class="badge">Trusted by multinationals across 28+ countries</div>
+    <!-- Password Modal -->
+    <div class="password-modal" id="passwordModal">
+        <div class="password-content">
+            <div class="password-logo">
+                <img src="assets/images/logo-white.png" alt="The Cozm">
+            </div>
+            <div class="password-subtitle">Exclusive Access</div>
+            <input
+                type="password"
+                class="password-input"
+                id="passwordInput"
+                placeholder="Enter Password"
+                autocomplete="off"
+            >
+            <button class="password-btn" onclick="checkPassword()">Enter</button>
+            <div class="password-error" id="passwordError">Invalid password. Please try again.</div>
+        </div>
     </div>
-  </section>
 
-  <!-- Price Comparison -->
-  <section id="pricing" class="comparison-bg">
-    <div class="section">
-      <div class="fade-in">
-        <div class="section-label">Pricing Comparison</div>
-        <div class="section-title">Why pay Big 4 rates for commodity work?</div>
-        <div class="section-subtitle">We deliver the same compliance outcomes at a fraction of the cost &mdash; powered by automation, not billable hours.</div>
-      </div>
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+        <header id="header">
+            <div class="header-container">
+                <div class="logo">
+                    <img src="assets/images/logo-white.png" alt="The Cozm">
+                </div>
+                <nav>
+                    <a href="#home">Home</a>
+                    <a href="#services">Services</a>
+                    <a href="#impact">Impact</a>
+                    <a href="#testimonials">Testimonials</a>
+                    <button class="contact-btn" onclick="scrollToContact()">Get Started</button>
+                </nav>
+                <button class="mobile-menu-btn">☰</button>
+            </div>
+        </header>
 
-      <div class="comparison-grid fade-in">
-        <!-- Cozm Card -->
-        <div class="price-card cozm">
-          <div class="provider">The Cozm</div>
-          <div class="price">&pound;200</div>
-          <div class="price-unit">per filing / per traveller assessment</div>
-          <ul>
-            <li><span class="check">&#10003;</span> Fully automated filings</li>
-            <li><span class="check">&#10003;</span> Real-time compliance dashboard</li>
-            <li><span class="check">&#10003;</span> 48-hour implementation</li>
-            <li><span class="check">&#10003;</span> API integrations with 25+ HRIS</li>
-            <li><span class="check">&#10003;</span> Dedicated support team</li>
-            <li><span class="check">&#10003;</span> No hidden partner-hour charges</li>
-          </ul>
-        </div>
-        <!-- Big 4 Card -->
-        <div class="price-card big4">
-          <div class="provider">Typical Big 4 Firm</div>
-          <div class="price">&pound;500</div>
-          <div class="price-unit">per filing / per traveller assessment</div>
-          <ul>
-            <li><span class="cross">&#10007;</span> Manual, labour-intensive process</li>
-            <li><span class="cross">&#10007;</span> Quarterly reporting delays</li>
-            <li><span class="cross">&#10007;</span> 3&ndash;6 month onboarding</li>
-            <li><span class="cross">&#10007;</span> Limited system integration</li>
-            <li><span class="cross">&#10007;</span> Rotating junior analysts</li>
-            <li><span class="cross">&#10007;</span> Opaque billing &amp; scope creep</li>
-          </ul>
-        </div>
-      </div>
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="hero-background"></div>
+            <div class="hero-pattern"></div>
+            <div class="hero-content">
+                <div class="hero-label">Global Workforce Solutions</div>
+                <h1>Seamless Cross-Border<br>Workforce Management</h1>
+                <p class="hero-subtitle">
+                    Navigate the complexity of international workforce management with confidence.
+                    From field service workers to global events, we deliver compliant, efficient solutions
+                    that transcend borders.
+                </p>
+                <div class="hero-cta">
+                    <a href="#services" class="btn-primary">Explore Services</a>
+                    <a href="#contact" class="btn-secondary">Schedule Consultation</a>
+                </div>
+            </div>
+        </section>
 
-      <!-- Bar Chart -->
-      <div class="bar-chart-section fade-in">
-        <h3 style="font-size:1.1rem; margin-bottom:24px;">Cost per 100 filings</h3>
-        <div class="bar-row">
-          <div class="bar-label">The Cozm</div>
-          <div class="bar-track">
-            <div class="bar-fill cozm-bar" data-width="40%" id="bar-cozm">&pound;20,000</div>
-          </div>
-        </div>
-        <div class="bar-row">
-          <div class="bar-label">Big 4 Firm</div>
-          <div class="bar-track">
-            <div class="bar-fill big4-bar" data-width="100%" id="bar-big4">&pound;50,000</div>
-          </div>
-        </div>
-        <div class="savings-callout">
-          <div class="big">&pound;30,000 saved</div>
-          <p>per 100 filings &mdash; that's a 60% reduction in compliance spend</p>
-        </div>
-      </div>
+        <!-- Services Section -->
+        <section class="services-section" id="services">
+            <div class="services-container">
+                <div class="section-header">
+                    <div class="section-label">Our Expertise</div>
+                    <h2 class="section-title">Comprehensive Cross-Border Solutions</h2>
+                    <p class="section-description">
+                        Three distinct service pillars designed to address every facet of your
+                        international workforce challenges.
+                    </p>
+                </div>
+
+                <div class="service-tabs">
+                    <button class="service-tab active" onclick="switchService('field-service')">
+                        Field Service Workers
+                    </button>
+                    <button class="service-tab" onclick="switchService('international-events')">
+                        International Events
+                    </button>
+                    <button class="service-tab" onclick="switchService('cross-border')">
+                        Cross-Border Services
+                    </button>
+                </div>
+
+                <!-- Field Service Content -->
+                <div class="service-content active" id="field-service">
+                    <div class="service-layout">
+                        <div class="service-info">
+                            <h3>Field Service Workers</h3>
+                            <p>
+                                Deploy technical teams across borders with complete regulatory compliance.
+                                Our comprehensive workforce management solutions ensure your field service
+                                operations run smoothly, regardless of geographic boundaries.
+                            </p>
+                            <ul class="service-features">
+                                <li>
+                                    <div class="feature-icon"></div>
+                                    <div class="feature-text">
+                                        <h4>Visa & Work Permit Coordination</h4>
+                                        <p>End-to-end documentation and processing for multi-country deployments</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon"></div>
+                                    <div class="feature-text">
+                                        <h4>Regulatory Compliance Management</h4>
+                                        <p>Stay compliant with local labor laws, tax regulations, and reporting requirements</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon"></div>
+                                    <div class="feature-text">
+                                        <h4>Payroll & Benefits Administration</h4>
+                                        <p>Streamlined multi-currency payroll with tax optimization and benefits coordination</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon"></div>
+                                    <div class="feature-text">
+                                        <h4>24/7 Support & Crisis Management</h4>
+                                        <p>Round-the-clock assistance for your international workforce</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <a href="#contact" class="btn-primary">Learn More</a>
+                        </div>
+                        <div class="service-visual">
+                            <div class="visual-decoration"></div>
+                            <div class="service-stats">
+                                <div class="stat-card">
+                                    <div class="stat-number">150+</div>
+                                    <div class="stat-label">Countries Covered</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">98%</div>
+                                    <div class="stat-label">Compliance Rate</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">72h</div>
+                                    <div class="stat-label">Avg. Processing Time</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">5000+</div>
+                                    <div class="stat-label">Workers Deployed</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- International Events Content -->
+                <div class="service-content" id="international-events">
+                    <div class="service-layout">
+                        <div class="service-info">
+                            <h3>International Events</h3>
+                            <p>
+                                Execute flawless global events with expert staffing and logistics coordination.
+                                From conferences to product launches, we handle the complexity of international
+                                event workforce management.
+                            </p>
+                            <ul class="service-features">
+                                <li>
+                                    <div class="feature-icon"></div>
+                                    <div class="feature-text">
+                                        <h4>Event Staffing Solutions</h4>
+                                        <p>Curated teams of qualified professionals for conferences, trade shows, and corporate events</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon"></div>
+                                    <div class="feature-text">
+                                        <h4>Travel & Accommodation Coordination</h4>
+                                        <p>Comprehensive logistics management for international teams and attendees</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon"></div>
+                                    <div class="feature-text">
+                                        <h4>Multi-Jurisdiction Compliance</h4>
+                                        <p>Navigate complex regulations for temporary event workers across borders</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon"></div>
+                                    <div class="feature-text">
+                                        <h4>On-Site Coordination</h4>
+                                        <p>Dedicated event managers ensuring seamless execution from setup to teardown</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <a href="#contact" class="btn-primary">Learn More</a>
+                        </div>
+                        <div class="service-visual">
+                            <div class="visual-decoration"></div>
+                            <div class="service-stats">
+                                <div class="stat-card">
+                                    <div class="stat-number">500+</div>
+                                    <div class="stat-label">Events Managed</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">85</div>
+                                    <div class="stat-label">Countries Served</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">10K+</div>
+                                    <div class="stat-label">Staff Deployed</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">99.7%</div>
+                                    <div class="stat-label">Event Success Rate</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cross-Border Services Content -->
+                <div class="service-content" id="cross-border">
+                    <div class="service-layout">
+                        <div class="service-info">
+                            <h3>Cross-Border Services</h3>
+                            <p>
+                                Comprehensive international mobility solutions that remove barriers to global
+                                workforce deployment. Our end-to-end services cover immigration, compliance,
+                                and workforce integration.
+                            </p>
+                            <ul class="service-features">
+                                <li>
+                                    <div class="feature-icon"></div>
+                                    <div class="feature-text">
+                                        <h4>Global Immigration Services</h4>
+                                        <p>Expert guidance on visas, work permits, and permanent residency applications</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon"></div>
+                                    <div class="feature-text">
+                                        <h4>Tax & Social Security Optimization</h4>
+                                        <p>Strategic planning to minimize tax burden and ensure compliance across jurisdictions</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon"></div>
+                                    <div class="feature-text">
+                                        <h4>Entity Setup & PEO Solutions</h4>
+                                        <p>Establish legal presence or leverage our employer of record services</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-icon"></div>
+                                    <div class="feature-text">
+                                        <h4>Relocation & Integration Support</h4>
+                                        <p>White-glove services ensuring smooth transitions for international assignees</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <a href="#contact" class="btn-primary">Learn More</a>
+                        </div>
+                        <div class="service-visual">
+                            <div class="visual-decoration"></div>
+                            <div class="service-stats">
+                                <div class="stat-card">
+                                    <div class="stat-number">180+</div>
+                                    <div class="stat-label">Jurisdictions</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">15</div>
+                                    <div class="stat-label">Avg. Years Experience</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">3500+</div>
+                                    <div class="stat-label">Relocations Completed</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">100%</div>
+                                    <div class="stat-label">Compliance Record</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Metrics Section -->
+        <section class="metrics-section" id="impact">
+            <div class="metrics-container">
+                <div class="section-header">
+                    <div class="section-label">Global Impact</div>
+                    <h2 class="section-title">Trusted by Industry Leaders</h2>
+                    <p class="section-description">
+                        Our track record speaks for itself. We've helped organizations of all sizes
+                        navigate the complexities of international workforce management.
+                    </p>
+                </div>
+                <div class="metrics-grid">
+                    <div class="metric-item">
+                        <div class="metric-value">180+</div>
+                        <div class="metric-label">Countries Worldwide</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-value">15K+</div>
+                        <div class="metric-label">Workers Deployed</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-value">500+</div>
+                        <div class="metric-label">Enterprise Clients</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-value">99.8%</div>
+                        <div class="metric-label">Client Satisfaction</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials-section" id="testimonials">
+            <div class="testimonials-container">
+                <div class="section-header">
+                    <div class="section-label">Client Success</div>
+                    <h2 class="section-title">What Our Clients Say</h2>
+                </div>
+                <div class="testimonial-carousel">
+                    <div class="testimonial-slide active">
+                        <p class="testimonial-text">
+                            "Cozm transformed our international field service operations. What used to take
+                            weeks now takes days. Their compliance expertise and 24/7 support have been invaluable
+                            for our global technical teams."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">SM</div>
+                            <div class="author-info">
+                                <h4>Sarah Mitchell</h4>
+                                <p>VP of Operations, TechGlobal Solutions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <p class="testimonial-text">
+                            "Managing our annual international conference used to be a logistical nightmare.
+                            Cozm handled everything from visa processing to on-site staffing with remarkable
+                            efficiency. Truly a game-changer."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">JC</div>
+                            <div class="author-info">
+                                <h4>James Chen</h4>
+                                <p>Director of Events, Innovation Summit</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <p class="testimonial-text">
+                            "The cross-border services provided by Cozm enabled us to expand into 12 new markets
+                            in just 18 months. Their expertise in international compliance and entity setup was
+                            exactly what we needed."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">RK</div>
+                            <div class="author-info">
+                                <h4>Rajesh Kumar</h4>
+                                <p>CEO, GlobalTech Ventures</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-controls">
+                        <div class="carousel-dot active" onclick="goToSlide(0)"></div>
+                        <div class="carousel-dot" onclick="goToSlide(1)"></div>
+                        <div class="carousel-dot" onclick="goToSlide(2)"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section" id="contact">
+            <div class="cta-background"></div>
+            <div class="cta-container">
+                <h2>Ready to Go Global?</h2>
+                <p>
+                    Let's discuss how Cozm can streamline your international workforce operations.
+                    Schedule a consultation with our experts today.
+                </p>
+                <div class="cta-buttons">
+                    <a href="mailto:contact@cozm.com" class="btn-primary">Get Started</a>
+                    <a href="tel:+1234567890" class="btn-secondary">Call Us</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-container">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <img src="assets/images/logo-white.png" alt="The Cozm">
+                    </div>
+                    <p>
+                        Leading provider of cross-border workforce solutions,
+                        helping organizations navigate the complexities of international
+                        workforce management with confidence.
+                    </p>
+                </div>
+                <div class="footer-column">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#services">Field Service Workers</a></li>
+                        <li><a href="#services">International Events</a></li>
+                        <li><a href="#services">Cross-Border Services</a></li>
+                        <li><a href="#services">Consulting</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#impact">Our Impact</a></li>
+                        <li><a href="#testimonials">Case Studies</a></li>
+                        <li><a href="#contact">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="mailto:contact@cozm.com">contact@cozm.com</a></li>
+                        <li><a href="tel:+1234567890">+1 (234) 567-890</a></li>
+                        <li><a href="#contact">Schedule Call</a></li>
+                        <li><a href="#support">Support Center</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Cozm. All rights reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </footer>
     </div>
-  </section>
 
-  <!-- Why Cozm Features -->
-  <section class="section">
-    <div class="fade-in">
-      <div class="section-label">Why The Cozm</div>
-      <div class="section-title">Automation replaces manual labour</div>
-      <div class="section-subtitle">Our platform turns a complex cost-centre into a streamlined, automated operation.</div>
-    </div>
-    <div class="features-grid fade-in">
-      <div class="feature-item">
-        <div class="feature-icon">&#9889;</div>
-        <h4>48hr Go-Live</h4>
-        <p>Most clients are operational within two days. No lengthy implementation projects or IT dependencies.</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">&#128274;</div>
-        <h4>100% Precision</h4>
-        <p>Algorithmic validation and real-time data cross-referencing eliminate human error from filings.</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">&#128200;</div>
-        <h4>98% Retention</h4>
-        <p>Our clients stay because we deliver results. Transparent pricing, no scope creep, no surprises.</p>
-      </div>
-    </div>
-  </section>
+    <script>
+        // Password Protection
+        const correctPassword = 'Cozm26';
+        const passwordModal = document.getElementById('passwordModal');
+        const mainContent = document.getElementById('mainContent');
+        const passwordInput = document.getElementById('passwordInput');
+        const passwordError = document.getElementById('passwordError');
 
-  <!-- Fee Estimators -->
-  <section id="estimator" class="estimator-bg">
-    <div class="section">
-      <div class="fade-in">
-        <div class="section-label" style="color:rgba(255,255,255,0.5);">Fee Estimator</div>
-        <div class="section-title" style="color:var(--white);">See what you'd pay with The Cozm</div>
-        <div class="section-subtitle" style="color:rgba(255,255,255,0.5);">Adjust the sliders to estimate your annual cost for each product.</div>
-      </div>
-
-      <div class="estimator-grid fade-in">
-        <!-- Cozm Travel -->
-        <div class="estimator-card">
-          <span class="tag tag-travel">COZM TRAVEL</span>
-          <h3>Business Travel Compliance</h3>
-          <p style="font-size:0.85rem; color:rgba(255,255,255,0.5); margin-bottom:24px;">
-            Automated risk assessments, tax filings, and compliance tracking for cross-border business travellers.
-          </p>
-          <label>Estimated annual traveller assessments</label>
-          <input type="range" id="travel-slider" min="50" max="5000" step="50" value="500" oninput="updateTravel()" />
-          <div class="slider-values"><span>50</span><span>5,000</span></div>
-          <div class="volume-display" id="travel-volume">500 assessments</div>
-          <div class="estimate-result">
-            <div class="label">Your Cozm Travel estimate</div>
-            <div class="amount" id="travel-cozm">&pound;100,000</div>
-            <div class="compare" id="travel-big4">Big 4 equivalent: &pound;250,000</div>
-            <div class="save-badge" id="travel-save">You save &pound;150,000/yr</div>
-          </div>
-        </div>
-
-        <!-- Cozm Unity -->
-        <div class="estimator-card">
-          <span class="tag tag-unity">COZM UNITY</span>
-          <h3>Global Mobility Operations</h3>
-          <p style="font-size:0.85rem; color:rgba(255,255,255,0.5); margin-bottom:24px;">
-            End-to-end assignment management: payroll equalisation, tax compliance, immigration tracking, and reporting.
-          </p>
-          <label>Number of active international assignees</label>
-          <input type="range" id="unity-slider" min="10" max="1000" step="10" value="100" oninput="updateUnity()" />
-          <div class="slider-values"><span>10</span><span>1,000</span></div>
-          <div class="volume-display" id="unity-volume">100 assignees</div>
-          <div class="estimate-result">
-            <div class="label">Your Cozm Unity estimate</div>
-            <div class="amount" id="unity-cozm">&pound;180,000</div>
-            <div class="compare" id="unity-big4">Big 4 equivalent: &pound;450,000</div>
-            <div class="save-badge" id="unity-save">You save &pound;270,000/yr</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section id="faq" class="section">
-    <div class="fade-in">
-      <div class="section-label">FAQ</div>
-      <div class="section-title">Common questions</div>
-      <div class="section-subtitle">Everything you need to know about switching from a Big 4 provider to The Cozm.</div>
-    </div>
-    <div class="fade-in">
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(this)">
-          How do you disrupt the Big 4 pricing model?
-          <span class="arrow">&#9660;</span>
-        </div>
-        <div class="faq-answer"><p>Traditional firms rely on manual labour and high partner rates. We replace manual filings with automated workflows that ensure 100% precision at 40% of the cost. You aren't paying for partner hours &mdash; you're paying for results.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(this)">
-          Is automation safer than manual review?
-          <span class="arrow">&#9660;</span>
-        </div>
-        <div class="faq-answer"><p>Human error is the leading cause of compliance failures. Our platform uses algorithmic validation and real-time data cross-referencing, providing a level of accuracy that manual reviews simply cannot match. Every filing is auditable and traceable.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(this)">
-          How fast is implementation?
-          <span class="arrow">&#9660;</span>
-        </div>
-        <div class="faq-answer"><p>Most clients go live with Cozm Travel in under 48 hours. Cozm Unity integrates with your existing HRIS via API, meaning no heavy lifting from your IT team. We handle the setup end-to-end.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(this)">
-          What is your customer satisfaction rate?
-          <span class="arrow">&#9660;</span>
-        </div>
-        <div class="faq-answer"><p>We maintain a 98% client retention rate. Our clients choose us because we turn a complex cost-centre into a streamlined, automated operation &mdash; with transparent pricing and no hidden charges.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(this)">
-          Which countries do you cover?
-          <span class="arrow">&#9660;</span>
-        </div>
-        <div class="faq-answer"><p>We currently support automated compliance filings across 28+ countries, covering tax, social security, and immigration requirements. Our coverage is expanding quarterly based on client demand.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(this)">
-          Can The Cozm integrate with our existing systems?
-          <span class="arrow">&#9660;</span>
-        </div>
-        <div class="faq-answer"><p>Yes. We offer pre-built integrations with 25+ HRIS and travel management platforms, including SAP SuccessFactors, Workday, Oracle HCM, and Concur. Custom API integrations are also available.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(this)">
-          What happens to our existing Big 4 relationship?
-          <span class="arrow">&#9660;</span>
-        </div>
-        <div class="faq-answer"><p>Many of our clients transition gradually. The Cozm can run alongside your current provider during a parallel period, allowing you to benchmark accuracy and cost before fully transitioning. There is zero disruption to ongoing compliance.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(this)">
-          How is data security handled?
-          <span class="arrow">&#9660;</span>
-        </div>
-        <div class="faq-answer"><p>All data is encrypted at rest and in transit. We are fully GDPR compliant and undergo regular third-party security audits. Our platform is hosted on enterprise-grade cloud infrastructure with SOC 2 Type II certification.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section id="contact" class="cta-section">
-    <div class="fade-in">
-      <h2>Ready to cut your compliance costs by 60%?</h2>
-      <p>Book a 30-minute demo and see exactly how The Cozm works for your organisation.</p>
-      <a href="https://thecozm.com/contact-us" class="btn-cta" target="_blank">Book a Demo</a>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2026 The Cozm. All rights reserved. | Confidential &mdash; for intended recipients only.</p>
-  </footer>
-
-</div>
-
-<script>
-  // ── Password Protection ──
-  // SHA-256 hash of the password "cozm2026"
-  const HASH = '5e4d2b2f4c8e8f6b1a3c9d7e0f2a4b6c'; // placeholder, we use simple comparison
-  const PASSWORD = 'cozm2026';
-
-  function checkPassword() {
-    const input = document.getElementById('gate-password').value;
-    if (input === PASSWORD) {
-      document.getElementById('password-gate').style.display = 'none';
-      document.getElementById('main-content').style.display = 'block';
-      sessionStorage.setItem('cozm-auth', 'true');
-      animateBars();
-      observeFadeIns();
-    } else {
-      document.getElementById('gate-error').style.display = 'block';
-      document.getElementById('gate-password').value = '';
-      document.getElementById('gate-password').focus();
-    }
-  }
-
-  // Enter key support
-  document.getElementById('gate-password').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') checkPassword();
-  });
-
-  // Remember auth for session
-  if (sessionStorage.getItem('cozm-auth') === 'true') {
-    document.getElementById('password-gate').style.display = 'none';
-    document.getElementById('main-content').style.display = 'block';
-    setTimeout(() => { animateBars(); observeFadeIns(); }, 100);
-  }
-
-  // ── Bar Chart Animation ──
-  function animateBars() {
-    setTimeout(() => {
-      document.getElementById('bar-cozm').style.width = '40%';
-      document.getElementById('bar-big4').style.width = '100%';
-    }, 500);
-  }
-
-  // ── Fee Estimators ──
-  function formatCurrency(n) {
-    return '£' + n.toLocaleString('en-GB');
-  }
-
-  function updateTravel() {
-    const v = parseInt(document.getElementById('travel-slider').value);
-    const cozmRate = 200;
-    const big4Rate = 500;
-    const cozmTotal = v * cozmRate;
-    const big4Total = v * big4Rate;
-    const saving = big4Total - cozmTotal;
-
-    document.getElementById('travel-volume').textContent = v.toLocaleString() + ' assessments';
-    document.getElementById('travel-cozm').textContent = formatCurrency(cozmTotal);
-    document.getElementById('travel-big4').textContent = 'Big 4 equivalent: ' + formatCurrency(big4Total);
-    document.getElementById('travel-save').textContent = 'You save ' + formatCurrency(saving) + '/yr';
-  }
-
-  function updateUnity() {
-    const v = parseInt(document.getElementById('unity-slider').value);
-    // Cozm Unity pricing: £1,800/assignee/year (£150/mo)
-    // Big 4 pricing: £4,500/assignee/year (£375/mo)
-    const cozmRate = 1800;
-    const big4Rate = 4500;
-    const cozmTotal = v * cozmRate;
-    const big4Total = v * big4Rate;
-    const saving = big4Total - cozmTotal;
-
-    document.getElementById('unity-volume').textContent = v.toLocaleString() + ' assignees';
-    document.getElementById('unity-cozm').textContent = formatCurrency(cozmTotal);
-    document.getElementById('unity-big4').textContent = 'Big 4 equivalent: ' + formatCurrency(big4Total);
-    document.getElementById('unity-save').textContent = 'You save ' + formatCurrency(saving) + '/yr';
-  }
-
-  // Init estimators
-  updateTravel();
-  updateUnity();
-
-  // ── FAQ Toggle ──
-  function toggleFaq(el) {
-    const item = el.parentElement;
-    const wasOpen = item.classList.contains('open');
-    // Close all
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!wasOpen) item.classList.add('open');
-  }
-
-  // ── Scroll Fade-In ──
-  function observeFadeIns() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
+        // Check if already authenticated
+        if (sessionStorage.getItem('authenticated') === 'true') {
+            passwordModal.classList.add('hidden');
+            mainContent.classList.add('visible');
         }
-      });
-    }, { threshold: 0.1 });
 
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-  }
-</script>
+        function checkPassword() {
+            const enteredPassword = passwordInput.value;
+
+            if (enteredPassword === correctPassword) {
+                sessionStorage.setItem('authenticated', 'true');
+                passwordModal.classList.add('hidden');
+                setTimeout(() => {
+                    mainContent.classList.add('visible');
+                }, 300);
+                passwordError.classList.remove('show');
+            } else {
+                passwordError.classList.add('show');
+                passwordInput.value = '';
+                passwordInput.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    passwordInput.style.animation = '';
+                }, 500);
+            }
+        }
+
+        // Allow Enter key to submit password
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Service Tab Switching
+        function switchService(serviceId) {
+            // Update tabs
+            const tabs = document.querySelectorAll('.service-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Update content
+            const contents = document.querySelectorAll('.service-content');
+            contents.forEach(content => content.classList.remove('active'));
+            document.getElementById(serviceId).classList.add('active');
+        }
+
+        // Testimonial Carousel
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.testimonial-slide');
+        const dots = document.querySelectorAll('.carousel-dot');
+
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+
+            currentSlide = index;
+
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        // Auto-advance carousel
+        setInterval(() => {
+            const nextSlide = (currentSlide + 1) % slides.length;
+            goToSlide(nextSlide);
+        }, 6000);
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        function scrollToContact() {
+            document.getElementById('contact').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Add shake animation for password error
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
